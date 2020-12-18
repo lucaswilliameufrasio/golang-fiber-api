@@ -1,6 +1,4 @@
-// +build test
-
-package main
+package config
 
 import (
 	"bytes"
@@ -14,15 +12,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSum(t *testing.T) {
-	assert.Equal(t, 2, 2, "Expecting 2")
-}
-
 func TestMainRoute(t *testing.T) {
-	app := server()
+	app := App()
 
 	// http.Request
-	req := httptest.NewRequest("GET", "http://localhost:7777", nil)
+	req := httptest.NewRequest("GET", "http://localhost:7777/api/", nil)
 
 	// http.Response
 	resp, _ := app.Test(req)
@@ -37,7 +31,7 @@ func TestMainRoute(t *testing.T) {
 }
 
 func TestV2MainRoute(t *testing.T) {
-	app := server()
+	app := App()
 
 	// http.Request
 	req := httptest.NewRequest("GET", "http://localhost:7777/api/v2/", nil)
@@ -57,7 +51,7 @@ func TestV2MainRoute(t *testing.T) {
 }
 
 func TestCorrectNameAndAge(t *testing.T) {
-	app := server()
+	app := App()
 
 	name := "doe"
 	age := "32"
@@ -75,10 +69,10 @@ func TestCorrectNameAndAge(t *testing.T) {
 }
 
 func TestCorrectEmailAndPassword(t *testing.T) {
-	app := server()
+	app := App()
 
 	type User struct {
-		Id    int    `json:"id"`
+		ID    int    `json:"id"`
 		Email string `json:"email"`
 	}
 
@@ -107,18 +101,18 @@ func TestCorrectEmailAndPassword(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	userId := result.User.Id
+	userID := result.User.ID
 	userEmail := result.User.Email
 
-	assert.Equal(t, 1, userId)
+	assert.Equal(t, 1, userID)
 	assert.Equal(t, "john@example.com", userEmail)
 }
 
 func TestProtectedRoute(t *testing.T) {
-	app := server()
+	app := App()
 
 	type User struct {
-		Id    int    `json:"id"`
+		ID    int    `json:"id"`
 		Email string `json:"email"`
 	}
 

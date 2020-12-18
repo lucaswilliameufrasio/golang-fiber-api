@@ -1,11 +1,11 @@
 ## Build all binaries 
 build:
-	$ go build -o bin/golang-fiber-api main/main.go
+	$ go build -o bin/golang-fiber-api main/server.go
 .PHONY: build
 
 ## Run development server
 run:
-	$ go run main/main.go
+	$ go run main/server.go
 .PHONY: run'
 
 ## Start compiled app
@@ -16,4 +16,15 @@ start:
 ## Run tests
 test:
 	$ go test -v ./... -tags=test
-.PHONY: test 
+.PHONY: test
+
+## Get tests coverage
+test-ci:
+	$ go test -v ./... -coverprofile=coverage.out -tags=test && make test-coverage-page
+.PHONY: test-ci 
+
+## Generate page to see coverage visually
+test-coverage-page:
+	$ go tool cover -html=coverage.out
+.PHONY: test-coverage-page
+

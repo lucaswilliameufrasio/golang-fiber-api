@@ -5,8 +5,11 @@ go 1.15
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gofiber/fiber v1.14.6
 	github.com/gofiber/fiber/v2 v2.0.2
+	github.com/gofiber/jwt v0.2.0
 	github.com/gofiber/jwt/v2 v2.0.0
+	github.com/gofiber/websocket v0.5.1
 	github.com/gofiber/websocket/v2 v2.0.0
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/savsgio/gotils v0.0.0-20200909101946-939aa3fc74fb // indirect
