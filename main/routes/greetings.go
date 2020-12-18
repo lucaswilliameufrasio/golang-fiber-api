@@ -1,10 +1,12 @@
 package routes
 
 import (
+	"lucaswilliameufrasio/golang-fiber-api/presentation/controllers"
+
 	"github.com/gofiber/fiber/v2"
 )
 
-// Greetings is a route to return a greetings message to guest client
-func Greetings(c *fiber.Ctx) error {
-	return c.SendString("Hello, World 👋!")
+// GreetingsRoutes setup
+func GreetingsRoutes(router fiber.Router) {
+	router.Get("/", controllers.ReplyGreetingsController)
 }

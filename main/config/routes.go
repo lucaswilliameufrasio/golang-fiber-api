@@ -13,11 +13,12 @@ import (
 func SetupRoutes(app *fiber.App) fiber.Router {
 	var router = app.Group("/api")
 
-	router.Get("/", routes.Greetings)
-	router.Get("/ws", websocket.New(events.WebsocketHandler))
+	routes.GreetingsRoutes(router)
 
 	setupRoutesV1(router)
 	setupRoutesV2(router)
+
+	router.Get("/ws", websocket.New(events.WebsocketHandler))
 
 	return router
 }
@@ -26,8 +27,7 @@ func SetupRoutes(app *fiber.App) fiber.Router {
 func setupRoutesV1(router fiber.Router) fiber.Router {
 	v1 := router.Group("/v1", middlewares.SimpleMiddleware)
 
-	// GET /john/75
-	v1.Get("/profile/:name/:age/:gender?", routes.UserNameAndAge)
+	routes.UserRoutes(v1)
 
 	return v1
 }
@@ -42,9 +42,7 @@ func setupRoutesV2(router fiber.Router) fiber.Router {
 		return c.SendString("Hello, World 👋!")
 	})
 
-	v2.Post("/login", routes.Login)
-
-	v2.Get("/profile", middlewares.AuthenticationRequired(), routes.Profile)
+	routes.LoginRoutes(v2)
 
 	return v2
 }

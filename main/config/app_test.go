@@ -142,7 +142,7 @@ func TestProtectedRoute(t *testing.T) {
 
 	accessToken := result.Token
 
-	mainRequest := httptest.NewRequest(http.MethodGet, "http://localhost:7777/api/v2/profile", nil)
+	mainRequest := httptest.NewRequest(http.MethodGet, "http://localhost:7777/api/v1/profile", nil)
 	mainRequest.Header.Set("Content-Type", "application/json")
 	mainRequest.Header.Set("Authorization", "Bearer "+accessToken)
 
