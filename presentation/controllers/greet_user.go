@@ -1,15 +1,17 @@
 package controllers
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gofiber/fiber/v2"
+	presentationprotocols "lucaswilliameufrasio/golang-fiber-api/presentation/protocols"
 )
 
 // GreetUserController is intended to return greetings message
-func GreetUserController(c *fiber.Ctx) error {
-	user := c.Locals("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	name := claims["name"].(string)
+func GreetUserController(request *presentationprotocols.HTTPRequest) presentationprotocols.HTTPResponse {
+	userName := request.User["name"]
 
-	return c.SendString("Welcome, " + name)
+	return presentationprotocols.HTTPResponse{
+		StatusCode: 200,
+		Data: map[string]interface{}{
+			"data": "Welcome, " + userName,
+		},
+	}
 }

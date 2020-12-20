@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"lucaswilliameufrasio/golang-fiber-api/main/adapters"
 	"lucaswilliameufrasio/golang-fiber-api/presentation/controllers"
 
 	"github.com/gofiber/fiber/v2"
@@ -8,5 +9,5 @@ import (
 
 // GreetingsRoutes setup
 func GreetingsRoutes(router fiber.Router) {
-	router.Get("/", controllers.ReplyGreetingsController)
+	router.Get("/", adapters.AdaptRoute(controllers.ReplyGreetingsController))
 }

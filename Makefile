@@ -13,6 +13,11 @@ start:
 	$ sh -c './bin/golang-fiber-api'
 .PHONY: start
 
+## Start app and watch file changes
+dev:
+	$ air -c .air.toml
+.PHONY: dev
+
 ## Run tests
 test:
 	$ go test -v ./... -tags=test

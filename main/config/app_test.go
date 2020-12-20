@@ -21,9 +21,12 @@ func TestMainRoute(t *testing.T) {
 	// http.Response
 	resp, _ := app.Test(req)
 
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	assert.Equal(t, `{"data":"Hello, World 👋!"}`, string(body))
+
 	// Do something with results:
 	if resp.StatusCode != 200 {
-		body, _ := ioutil.ReadAll(resp.Body)
 		fmt.Println(string(body)) // => Hello, World 👋!
 
 		t.Errorf("got %d, want %d", resp.StatusCode, 200)
@@ -146,8 +149,9 @@ func TestProtectedRoute(t *testing.T) {
 	mainRequest.Header.Set("Content-Type", "application/json")
 	mainRequest.Header.Set("Authorization", "Bearer "+accessToken)
 
-	responseExpected, _ := app.Test(mainRequest)
-	expectedBody, _ := ioutil.ReadAll(responseExpected.Body)
+	responseActual, _ := app.Test(mainRequest)
+	responseBody, _ := ioutil.ReadAll(responseActual.Body)
+	expectedResponse := `{"data":"Welcome, John Doe"}`
 
-	assert.Equal(t, "Welcome, John Doe", string(expectedBody))
+	assert.Equal(t, expectedResponse, string(responseBody))
 }
