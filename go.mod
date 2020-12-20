@@ -1,3 +1,5 @@
+// +heroku goVersion 1.15
+
 module lucaswilliameufrasio/golang-fiber-api
 
 go 1.15
