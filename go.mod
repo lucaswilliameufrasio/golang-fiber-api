@@ -16,7 +16,6 @@ require (
 	github.com/gofiber/jwt/v2 v2.0.0
 	github.com/gofiber/websocket v0.5.1
 	github.com/gofiber/websocket/v2 v2.0.0
-	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
 	github.com/savsgio/gotils v0.0.0-20200909101946-939aa3fc74fb // indirect
