@@ -7,11 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// AdaptRouteResult specifies what will be returned by the function
-type AdaptRouteResult func(c *fiber.Ctx) error
-
 // AdaptRoute adapt fiber interface to any controller
-func AdaptRoute(controller protocols.Controller) AdaptRouteResult {
+func AdaptRoute(controller protocols.Controller) func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		var body map[string]string
 		c.BodyParser(&body)
