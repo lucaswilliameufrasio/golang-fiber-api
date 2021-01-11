@@ -33,3 +33,14 @@ test-coverage-page:
 	$ go tool cover -html=coverage.out
 .PHONY: test-coverage-page
 
+## Build image using root permission
+docker-build-sudo:
+	$ sudo docker build -t lucaswilliam/go-fiber-api .
+.PHONY: docker-build-sudo
+
+## Run image using root permissions
+docker-run-sudo:
+	$ sudo docker run -d -p 7979:8888 -e PORT=8888 lucaswilliam/go-fiber-api
+.PHONY: docker-run-sudo
+
+
