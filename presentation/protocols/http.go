@@ -10,7 +10,7 @@ type HTTPResponse struct {
 
 // HTTPRequest fields
 type HTTPRequest struct {
-	Body   map[string]string
+	Body   interface{}
 	Params getParams
 	User   map[string]string
 }

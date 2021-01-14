@@ -10,7 +10,7 @@ import (
 // AdaptRoute adapt fiber interface to any controller
 func AdaptRoute(controller protocols.Controller) func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		var body map[string]string
+		var body interface{}
 		c.BodyParser(&body)
 
 		userInfo := getUserFromContext(c)
