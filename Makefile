@@ -43,6 +43,11 @@ update-test-deps:
 	$ go get -t -u ./...
 .PHONY: update-test-deps
 
+## Remove unused modules
+clean-mod:
+	$ go mod tidy
+.PHONY: clean-mod
+
 ## Build image using root permission
 docker-build-sudo:
 	$ sudo docker build -t lucaswilliam/go-fiber-api .
