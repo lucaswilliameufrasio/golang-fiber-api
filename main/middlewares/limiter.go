@@ -13,9 +13,9 @@ func LimitRequest(c *fiber.Ctx) error {
 		Next: func(c *fiber.Ctx) bool {
 			return c.IP() == "127.0.0.1"
 		},
-		Max:      20,
-		Duration: 30 * time.Second,
-		Key: func(c *fiber.Ctx) string {
+		Max:        20,
+		Expiration: 30 * time.Second,
+		KeyGenerator: func(c *fiber.Ctx) string {
 			return c.Get("x-forwarded-for")
 		},
 		LimitReached: func(c *fiber.Ctx) error {
