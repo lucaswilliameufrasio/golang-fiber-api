@@ -9,6 +9,7 @@ func App() *fiber.App {
 	app := fiber.New()
 
 	SetupStaticFiles(app)
+	SetupMiddlewares(app)
 	SetupRoutes(app)
 
 	return app
