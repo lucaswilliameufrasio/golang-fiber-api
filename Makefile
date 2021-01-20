@@ -33,6 +33,16 @@ test-coverage-page:
 	$ go tool cover -html=coverage.out
 .PHONY: test-coverage-page
 
+## Update all dependencies
+update-deps:
+	$ go get -u ./...
+.PHONY: update-deps
+
+## Update all test dependencies
+update-test-deps:
+	$ go get -t -u ./...
+.PHONY: update-test-deps
+
 ## Build image using root permission
 docker-build-sudo:
 	$ sudo docker build -t lucaswilliam/go-fiber-api .
