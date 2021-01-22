@@ -1,11 +1,11 @@
 ## Build all binaries 
 build:
-	$ go build -o bin/golang-fiber-api main/server.go
+	$ go build -o bin/golang-fiber-api src/main/server.go
 .PHONY: build
 
 ## Run development server
 run:
-	$ go run main/server.go
+	$ go run src/main/server.go
 .PHONY: run'
 
 ## Start compiled app

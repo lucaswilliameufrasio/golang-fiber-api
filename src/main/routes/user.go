@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"lucaswilliameufrasio/golang-fiber-api/main/adapters"
-	"lucaswilliameufrasio/golang-fiber-api/main/middlewares"
-	"lucaswilliameufrasio/golang-fiber-api/presentation/controllers"
+	"lucaswilliameufrasio/golang-fiber-api/src/main/adapters"
+	"lucaswilliameufrasio/golang-fiber-api/src/main/middlewares"
+	"lucaswilliameufrasio/golang-fiber-api/src/presentation/controllers"
 
 	"github.com/gofiber/fiber/v2"
 )

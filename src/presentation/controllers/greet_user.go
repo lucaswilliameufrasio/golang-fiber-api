@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	presentationprotocols "lucaswilliameufrasio/golang-fiber-api/presentation/protocols"
+	presentationprotocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
 )
 
 // GreetUserController is intended to return greetings message

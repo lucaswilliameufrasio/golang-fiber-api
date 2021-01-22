@@ -1,7 +1,7 @@
 package config
 
 import (
-	"lucaswilliameufrasio/golang-fiber-api/main/middlewares"
+	"lucaswilliameufrasio/golang-fiber-api/src/main/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )

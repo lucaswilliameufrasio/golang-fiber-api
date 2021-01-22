@@ -7,7 +7,7 @@ tmp_dir = "tmp"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -o ./tmp/golang-fiber-api main/server.go"
+cmd = "go build -o ./tmp/golang-fiber-api src/main/server.go"
 # Binary file yields from `cmd`.
 bin = "tmp/golang-fiber-api"
 # Customize binary.

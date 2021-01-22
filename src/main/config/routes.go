@@ -1,9 +1,9 @@
 package config
 
 import (
-	"lucaswilliameufrasio/golang-fiber-api/main/events"
-	"lucaswilliameufrasio/golang-fiber-api/main/middlewares"
-	"lucaswilliameufrasio/golang-fiber-api/main/routes"
+	"lucaswilliameufrasio/golang-fiber-api/src/main/events"
+	"lucaswilliameufrasio/golang-fiber-api/src/main/middlewares"
+	"lucaswilliameufrasio/golang-fiber-api/src/main/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"

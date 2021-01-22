@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	config "lucaswilliameufrasio/golang-fiber-api/main/config"
+	config "lucaswilliameufrasio/golang-fiber-api/src/main/config"
 	"os"
 )
 

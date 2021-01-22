@@ -1,7 +1,7 @@
 package adapters
 
 import (
-	protocols "lucaswilliameufrasio/golang-fiber-api/presentation/protocols"
+	protocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
 
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"

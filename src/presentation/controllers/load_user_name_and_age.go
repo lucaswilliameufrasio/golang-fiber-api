@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"fmt"
-	presentationprotocols "lucaswilliameufrasio/golang-fiber-api/presentation/protocols"
+	presentationprotocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
 )
 
 // // LoadUserNameAndAgeController to get user name and age
