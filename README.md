@@ -14,5 +14,5 @@ make dev
 ## To test websocket run:
 
 ``` bash
-npx wscat -c localhost:7979/ws
+npx wscat -c localhost:7979/api/ws
 ```
