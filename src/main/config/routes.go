@@ -28,6 +28,7 @@ func setupRoutesV1(router fiber.Router) fiber.Router {
 	v1.Use(middlewares.LimitRequest)
 
 	routes.LoginRoutes(v1)
+	routes.Protected(v1)
 
 	return v1
 }
