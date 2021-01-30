@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// GreetingsRoutes setup
-func GreetingsRoutes(router fiber.Router) {
-	router.Get("/", adapters.AdaptRoute(controllers.ReplyGreetingsController))
+// StatusRoutes setup
+func StatusRoutes(router fiber.Router) {
+	router.Get("/", adapters.AdaptRoute(controllers.StatusController))
 }
