@@ -1,10 +1,9 @@
 package middlewares
 
 import (
-	"fmt"
 	"lucaswilliameufrasio/golang-fiber-api/src/main/config/environment"
 
-	"github.com/dgrijalva/jwt-go"
+	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"
 )
@@ -27,18 +26,20 @@ func AuthenticationRequired() func(c *fiber.Ctx) error {
 // AuthorizationMiddleware is a middleware to ensure user has a role setted
 func AuthorizationMiddleware() func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
+		var role string
+
 		var requestScopeVariable = c.Locals("user")
 		if requestScopeVariable == nil {
 			return c.SendStatus(fiber.StatusUnauthorized)
 		}
+		var userFromContext = c.Locals("user").(*jwt.Token)
+		var claims = userFromContext.Claims.(jwt.MapClaims)
 
-		role := requestScopeVariable.(*jwt.Token)
+		role = claims["role"].(string)
 
-		if role == nil {
+		if role == "guest" {
 			return c.SendStatus(fiber.StatusUnauthorized)
 		}
-
-		fmt.Print(role)
 
 		return c.Next()
 	}
