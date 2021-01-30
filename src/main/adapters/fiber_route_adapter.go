@@ -21,7 +21,7 @@ func AdaptRoute(controller protocols.Controller) func(*fiber.Ctx) error {
 			User:   userInfo,
 		}
 
-		var response = controller(&request)
+		var response = controller.Handler(&request)
 
 		return c.Status(response.StatusCode).JSON(response.Data)
 	}
