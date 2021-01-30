@@ -1,18 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	config "lucaswilliameufrasio/golang-fiber-api/src/main/config"
-	"os"
 )
 
 func main() {
 	server := config.App()
-	PORT := os.Getenv("PORT")
-	var address = ":7979"
-	if PORT != "" {
-		address = ":" + PORT
-	}
+
 	// app.Use(logger.New())
-	log.Fatal(server.Listen(address))
+	if err := server.Listen(fmt.Sprintf(":%v", config.Port)); err != nil {
+		log.Panic(err)
+	}
 }
