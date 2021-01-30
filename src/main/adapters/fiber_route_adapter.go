@@ -39,7 +39,6 @@ func getUserFromContext(c *fiber.Ctx) map[string]string {
 		var userFromContext = c.Locals("user").(*jwt.Token)
 		var claims = userFromContext.Claims.(jwt.MapClaims)
 
-		name = claims["name"].(string)
 		role = claims["role"].(string)
 	}
 
