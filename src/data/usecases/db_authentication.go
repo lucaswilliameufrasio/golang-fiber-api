@@ -40,9 +40,6 @@ func (a dbAuthentication) Auth(p ucs.AuthenticationParams) (*ucs.AuthenticationR
 		if iseq == true {
 			generatedToken, err := a.Encrypt(account.Role)
 
-			// if err != nil {
-			// 	return c.SendStatus(fiber.StatusInternalServerError)
-			// }
 			if err != nil {
 				return nil, err
 			}
