@@ -11,14 +11,15 @@ import (
 // JwtSecret will have the information of the secret needed to create and verify jwt tokens
 var JwtSecret = os.Getenv("JWT_SECRET")
 
+type LoginControllerParams struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 // LoginController is a controller to execute login process
 func LoginController(c *fiber.Ctx) error {
-	type request struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
 
-	var body request
+	var body LoginControllerParams
 	err := c.BodyParser(&body)
 
 	if err != nil {
