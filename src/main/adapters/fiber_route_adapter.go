@@ -13,12 +13,10 @@ func AdaptRoute(controller protocols.Controller) func(*fiber.Ctx) error {
 		var body interface{}
 		c.BodyParser(&body)
 
-		userInfo := getUserFromContext(c)
-
 		var request = protocols.HTTPRequest{
 			Body:   body,
 			Params: c.Params,
-			User:   userInfo,
+			User:   getUserFromContext(c),
 		}
 
 		var response = controller.Handler(&request)
