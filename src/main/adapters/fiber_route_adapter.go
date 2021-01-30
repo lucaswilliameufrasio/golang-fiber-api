@@ -11,7 +11,11 @@ import (
 func AdaptRoute(controller protocols.Controller) func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		var body interface{}
-		c.BodyParser(&body)
+		if err := c.BodyParser(&body); err != nil {
+			c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Cannot parse json",
+			})
+		}
 
 		var request = protocols.HTTPRequest{
 			Body:   body,

@@ -1,59 +1,59 @@
 package controllers
 
 import (
-	"os"
-	"time"
-
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gofiber/fiber/v2"
+	ucs "lucaswilliameufrasio/golang-fiber-api/src/domain/usecases"
+	protocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
 )
-
-// JwtSecret will have the information of the secret needed to create and verify jwt tokens
-var JwtSecret = os.Getenv("JWT_SECRET")
 
 type LoginControllerParams struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-// LoginController is a controller to execute login process
-func LoginController(c *fiber.Ctx) error {
+func NewLoginController(auth ucs.Authentication) protocols.Controller {
+	return LoginController{
+		auth,
+	}
+}
 
-	var body LoginControllerParams
-	err := c.BodyParser(&body)
+type LoginController struct {
+	ucs.Authentication
+}
 
-	if err != nil {
-		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Cannot parse json",
-		})
+func castParams(data interface{}) LoginControllerParams {
+	email := data.(map[string]interface{})["email"].(string)
+	password := data.(map[string]interface{})["password"].(string)
+	params := LoginControllerParams{
+		Email:    email,
+		Password: password,
+	}
+	return params
+}
+
+// Handler is a controller to execute login process
+func (sts LoginController) Handler(request *protocols.HTTPRequest) protocols.HTTPResponse {
+	params := castParams(request.Body)
+
+	result, err := sts.Authentication.Auth(ucs.AuthenticationParams(params))
+
+	if err != nil || result == nil {
+		return protocols.HTTPResponse{
+			StatusCode: 401,
+			Data: map[string]interface{}{
+				"error": "Bad Credentials",
+			},
+		}
 	}
 
-	if body.Email != "john@example.com" || body.Password != "doe" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Bad Credentials",
-		})
-	}
-
-	token := jwt.New(jwt.SigningMethodHS256)
-
-	claims := token.Claims.(jwt.MapClaims)
-	claims["name"] = "John Doe"
-	claims["role"] = "admin"
-	claims["exp"] = time.Now().Add(time.Hour * 8).Unix()
-
-	generatedToken, err := token.SignedString([]byte(JwtSecret))
-	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
-	}
-
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"token": generatedToken,
-		"user": struct {
-			ID    int    `json:"id"`
-			Email string `json:"email"`
-		}{
-			ID:    1,
-			Email: "john@example.com",
+	return protocols.HTTPResponse{
+		StatusCode: 200,
+		Data: map[string]interface{}{
+			"token": result.Token,
+			"user": struct {
+				Email string `json:"email"`
+			}{
+				Email: result.User.Email,
+			},
 		},
-	})
+	}
 }

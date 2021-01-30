@@ -15,6 +15,7 @@ require (
 	github.com/gofiber/websocket/v2 v2.0.2
 	github.com/joho/godotenv v1.3.0
 	github.com/klauspost/compress v1.11.7 // indirect
+	github.com/matthewhartstonge/argon2 v0.1.4
 	github.com/savsgio/gotils v0.0.0-20210105085219-0567298fdcac // indirect
 	github.com/stretchr/testify v1.7.0
 	github.com/valyala/fasthttp v1.19.0 // indirect

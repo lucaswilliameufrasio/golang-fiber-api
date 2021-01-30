@@ -3,14 +3,15 @@ package main
 import (
 	"fmt"
 	"log"
-	config "lucaswilliameufrasio/golang-fiber-api/src/main/config"
+	"lucaswilliameufrasio/golang-fiber-api/src/main/config"
+	"lucaswilliameufrasio/golang-fiber-api/src/main/config/environment"
 )
 
 func main() {
 	server := config.App()
 
 	// app.Use(logger.New())
-	if err := server.Listen(fmt.Sprintf(":%v", config.Port)); err != nil {
+	if err := server.Listen(fmt.Sprintf(":%v", environment.Port)); err != nil {
 		log.Panic(err)
 	}
 }

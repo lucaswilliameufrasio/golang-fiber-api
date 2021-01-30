@@ -1,4 +1,4 @@
-package ctrlfctrs
+package fctrls
 
 import (
 	"lucaswilliameufrasio/golang-fiber-api/src/presentation/controllers"
