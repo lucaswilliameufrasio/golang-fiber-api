@@ -25,13 +25,23 @@ test:
 
 ## Get tests coverage
 test-ci:
-	$ go test -v ./... -coverprofile=coverage.out -tags=test && make test-coverage-page
+	$ make test-coverage
 .PHONY: test-ci 
+
+## Generate page to see coverage visually
+test-coverage:
+	$ go test -v -coverpkg=./... -coverprofile=coverage.out ./... -tags=test
+.PHONY: test-coverage-page
 
 ## Generate page to see coverage visually
 test-coverage-page:
 	$ go tool cover -html=coverage.out
 .PHONY: test-coverage-page
+
+## Download all dependencies
+get-deps:
+	$ go get -d ./...
+.PHONY: get-deps
 
 ## Update all dependencies
 update-deps:
