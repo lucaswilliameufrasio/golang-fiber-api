@@ -19,7 +19,7 @@ jobs:
         go-version: 1.15
     
     - name: Cache go modules
-    - uses: actions/cache@v2
+      uses: actions/cache@v2
       with:
         path: |
           ~/go/pkg/mod
