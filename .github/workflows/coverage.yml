@@ -29,9 +29,14 @@ jobs:
 
     - name: Run tests and and write coverage to a file
       run: make test-coverage
+    
+    - name: Convert Golang coverage to lcov
+      uses: jandelgado/gcov2lcov-action@v1.0.5
+      with:
+        infile: coverage.out
+        outfile: coverage/lcov.info
       
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-    

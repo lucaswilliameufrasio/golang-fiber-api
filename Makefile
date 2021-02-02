@@ -35,7 +35,7 @@ cv-lcov:
 
 ## Generate page to see coverage visually
 test-coverage:
-	$ go test -v -coverpkg=./... -covermode=count -coverprofile=coverage.out ./... -tags=test && make cv-lcov
+	$ go test -v -coverpkg=./... -covermode=count -coverprofile=coverage.out ./... -tags=test
 .PHONY: test-coverage-page
 
 ## Generate page to see coverage visually
