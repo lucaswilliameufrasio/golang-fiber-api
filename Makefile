@@ -25,8 +25,14 @@ test:
 
 ## Get tests coverage
 test-ci:
-	$ make test-coverage
-.PHONY: test-ci 
+	$ make test-coverage && make cv-lcov
+.PHONY: test-ci
+
+## Convert golang test coverage to lcov format
+cv-lcov:
+	$ mkdir coverage && gcov2lcov -infile=coverage.out -outfile=coverage/lcov.info
+.PHONY: cv-lcov
+
 
 ## Generate page to see coverage visually
 test-coverage:
