@@ -1,3 +1,4 @@
+![Tests Action Status](https://github.com/lucaswilliameufrasio/golang-fiber-api/workflows/Run%20tests/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/lucaswilliameufrasio/golang-fiber-api/badge.svg?branch=main)](https://coveralls.io/github/lucaswilliameufrasio/golang-fiber-api?branch=main)
 
 ## To run in production mode:
