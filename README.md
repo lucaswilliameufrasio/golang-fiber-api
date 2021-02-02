@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/lucaswilliameufrasio/golang-fiber-api/badge.svg?branch=main)](https://coveralls.io/github/lucaswilliameufrasio/golang-fiber-api?branch=main)
+
 ## To run in production mode:
 
 ``` bash
