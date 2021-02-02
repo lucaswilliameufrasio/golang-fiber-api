@@ -18,4 +18,5 @@ jobs:
         go-version: 1.15
 
     - name: Test
-      run: make test-coverage
+      run: make test
+    
