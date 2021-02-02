@@ -1,3 +1,4 @@
+// +test
 package config
 
 import (
@@ -9,11 +10,16 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 )
 
+func SUT() *fiber.App {
+	return App()
+}
+
 func TestMainRoute(t *testing.T) {
-	app := App()
+	app := SUT()
 
 	// http.Request
 	req := httptest.NewRequest("GET", "http://localhost:7777/api/", nil)
@@ -33,46 +39,8 @@ func TestMainRoute(t *testing.T) {
 	}
 }
 
-func TestV2MainRoute(t *testing.T) {
-	app := App()
-
-	// http.Request
-	req := httptest.NewRequest("GET", "http://localhost:7777/api/v2/", nil)
-
-	// http.Response
-	resp, _ := app.Test(req)
-
-	// Do something with results:
-	body, _ := ioutil.ReadAll(resp.Body)
-	// if resp.StatusCode != 200 {
-	// fmt.Println(string(body)) // => Hello, World 👋!
-
-	// 	t.Errorf("got %d, want %d", resp.StatusCode, 200)
-	// }
-
-	assert.Equal(t, "Hello, World 👋!", string(body))
-}
-
-func TestCorrectNameAndAge(t *testing.T) {
-	app := App()
-
-	name := "doe"
-	age := "32"
-
-	req := httptest.NewRequest(http.MethodGet, "http://localhost:7777/api/v1/profile/"+name+"/"+age, nil)
-
-	resp, _ := app.Test(req)
-
-	expectedResponse := `{"active":true,"info":"👴 ` + name + ` is ` + age + ` years old"}`
-
-	body, _ := ioutil.ReadAll(resp.Body)
-	responseBody := string(body)
-
-	assert.Equal(t, expectedResponse, responseBody)
-}
-
 func TestCorrectEmailAndPassword(t *testing.T) {
-	app := App()
+	app := SUT()
 
 	type User struct {
 		ID    int    `json:"id"`
@@ -85,9 +53,9 @@ func TestCorrectEmailAndPassword(t *testing.T) {
 	}
 
 	// http.Request
-	httpRequest := []byte(`{"email":"john@example.com","password":"doe"}`)
+	httpRequest := []byte(`{"email":"user1@example.com","password":"pass"}`)
 
-	req := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v2/login", bytes.NewBuffer(httpRequest))
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v1/login", bytes.NewBuffer(httpRequest))
 	req.Header.Set("Content-Type", "application/json")
 
 	// http.Response
@@ -107,12 +75,12 @@ func TestCorrectEmailAndPassword(t *testing.T) {
 	userID := result.User.ID
 	userEmail := result.User.Email
 
-	assert.Equal(t, 1, userID)
-	assert.Equal(t, "john@example.com", userEmail)
+	assert.Equal(t, 0, userID)
+	assert.Equal(t, "user1@example.com", userEmail)
 }
 
 func TestProtectedRoute(t *testing.T) {
-	app := App()
+	app := SUT()
 
 	type User struct {
 		ID    int    `json:"id"`
@@ -125,9 +93,9 @@ func TestProtectedRoute(t *testing.T) {
 	}
 
 	// http.Request
-	httpRequest := []byte(`{"email":"john@example.com","password":"doe"}`)
+	httpRequest := []byte(`{"email":"user1@example.com","password":"pass"}`)
 
-	reqLogin := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v2/login", bytes.NewBuffer(httpRequest))
+	reqLogin := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v1/login", bytes.NewBuffer(httpRequest))
 	reqLogin.Header.Set("Content-Type", "application/json")
 
 	respWithToken, _ := app.Test(reqLogin)
@@ -145,13 +113,13 @@ func TestProtectedRoute(t *testing.T) {
 
 	accessToken := result.Token
 
-	mainRequest := httptest.NewRequest(http.MethodGet, "http://localhost:7777/api/v1/profile", nil)
+	mainRequest := httptest.NewRequest(http.MethodGet, "http://localhost:7777/api/v1/protected", nil)
 	mainRequest.Header.Set("Content-Type", "application/json")
 	mainRequest.Header.Set("Authorization", "Bearer "+accessToken)
 
 	responseActual, _ := app.Test(mainRequest)
 	responseBody, _ := ioutil.ReadAll(responseActual.Body)
-	expectedResponse := `{"data":"Welcome, John Doe"}`
+	expectedResponse := `{"data":"Hello, Dude 👋!"}`
 
 	assert.Equal(t, expectedResponse, string(responseBody))
 }
