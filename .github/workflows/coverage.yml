@@ -17,6 +17,15 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.15
+    
+    - name: Cache go modules
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
 
     - name: Run tests and and write coverage to a file
       run: make test-coverage
