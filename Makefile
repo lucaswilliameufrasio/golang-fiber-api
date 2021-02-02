@@ -30,7 +30,7 @@ test-ci:
 
 ## Convert golang test coverage to lcov format
 cv-lcov:
-	$ rm -rf coverage && mkdir coverage && gcov2lcov -infile=coverage.out -outfile=coverage/lcov.info
+	$ go get -u github.com/jandelgado/gcov2lcov && rm -rf coverage && mkdir coverage && gcov2lcov -infile=coverage.out -outfile=coverage/lcov.info
 .PHONY: cv-lcov
 
 ## Generate page to see coverage visually
