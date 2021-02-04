@@ -7,5 +7,5 @@ type LoadUserByIDRepositoryResult struct {
 }
 
 type LoadUserByEmailRepository interface {
-	LoadByEmail(email string) (user *LoadUserByIDRepositoryResult, err error)
+	LoadByEmail(email string) (*LoadUserByIDRepositoryResult, error)
 }

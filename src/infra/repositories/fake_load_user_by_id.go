@@ -11,7 +11,7 @@ func NewFakeLoadUserByIDRepository() protocols.LoadUserByEmailRepository {
 
 type fakeLoadUserByIDRepository struct{}
 
-func (fakeLoadUserByIDRepository) LoadByEmail(email string) (userFound *protocols.LoadUserByIDRepositoryResult, err error) {
+func (fakeLoadUserByIDRepository) LoadByEmail(email string) (*protocols.LoadUserByIDRepositoryResult, error) {
 	users := datasources.MakeUsersDataSource()
 	for _, user := range users {
 		if user.Email == email {
