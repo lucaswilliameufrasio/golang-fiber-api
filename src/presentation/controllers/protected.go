@@ -1,6 +1,9 @@
 package controllers
 
-import protocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
+import (
+	"fmt"
+	protocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
+)
 
 func NewProtectedController() protocols.Controller {
 	return ProtectedController{}
@@ -13,7 +16,7 @@ func (sts ProtectedController) Handler(request *protocols.HTTPRequest) protocols
 	return protocols.HTTPResponse{
 		StatusCode: 200,
 		Data: map[string]interface{}{
-			"data": "Hello, Dude 👋!",
+			"data": fmt.Sprintf("Hello, Dude 👋! Your ID is %v", *request.UserID),
 		},
 	}
 }
