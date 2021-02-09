@@ -70,11 +70,30 @@ func TestCorrectEmailAndPassword(t *testing.T) {
 	assert.Equal(t, "user1@example.com", userEmail)
 }
 
-func TestWrongEmailAndPassword(t *testing.T) {
+func TestWrongEmail(t *testing.T) {
 	app := SUT()
 
 	// http.Request
 	httpRequest := []byte(`{"email":"userunknown@example.com","password":"pass"}`)
+
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v1/login", bytes.NewBuffer(httpRequest))
+	req.Header.Set("Content-Type", "application/json")
+
+	// http.Response
+	resp, _ := app.Test(req)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	expectedResponse := `{"error":"Bad Credentials"}`
+
+	assert.Equal(t, expectedResponse, string(body))
+}
+
+func TestWrongPassword(t *testing.T) {
+	app := SUT()
+
+	// http.Request
+	httpRequest := []byte(`{"email":"user1@example.com","password":"not_valid"}`)
 
 	req := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v1/login", bytes.NewBuffer(httpRequest))
 	req.Header.Set("Content-Type", "application/json")
