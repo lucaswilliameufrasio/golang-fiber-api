@@ -10,6 +10,11 @@ type LoginControllerParams struct {
 	Password string `json:"password"`
 }
 
+type LoginControllerResult struct {
+	Token string `json:"token"`
+	Email string `json:"email"`
+}
+
 func NewLoginController(auth ucs.Authentication) protocols.Controller {
 	return LoginController{
 		auth,
@@ -47,13 +52,9 @@ func (sts LoginController) Handler(request *protocols.HTTPRequest) protocols.HTT
 
 	return protocols.HTTPResponse{
 		StatusCode: 200,
-		Data: map[string]interface{}{
-			"token": result.Token,
-			"user": struct {
-				Email string `json:"email"`
-			}{
-				Email: result.User.Email,
-			},
+		Data: LoginControllerResult{
+			Token: result.Token,
+			Email: result.User.Email,
 		},
 	}
 }
