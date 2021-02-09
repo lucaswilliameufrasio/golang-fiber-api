@@ -73,7 +73,7 @@ func TestCorrectEmailAndPassword(t *testing.T) {
 func TestProtectedRoute(t *testing.T) {
 	app := SUT()
 
-	type Response struct {
+	type LoginResponse struct {
 		Token string `json:"token"`
 		Email string `json:"email"`
 	}
@@ -88,14 +88,14 @@ func TestProtectedRoute(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(respWithToken.Body)
 
-	result := &Response{}
-	err := json.Unmarshal(body, result)
+	resultOfLogin := &LoginResponse{}
+	err := json.Unmarshal(body, resultOfLogin)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	accessToken := result.Token
+	accessToken := resultOfLogin.Token
 
 	mainRequest := httptest.NewRequest(http.MethodGet, "http://localhost:7777/api/v1/protected", nil)
 	mainRequest.Header.Set("Content-Type", "application/json")
