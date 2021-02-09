@@ -14,11 +14,6 @@ func NewDbAuthentication(enc protocols.Encrypter, repo protocols.LoadUserByEmail
 	}
 }
 
-type DbAuthenticationResult struct {
-	ID    int    `json:"id"`
-	Email string `json:"email"`
-}
-
 type dbAuthentication struct {
 	protocols.Encrypter
 	protocols.LoadUserByEmailRepository
