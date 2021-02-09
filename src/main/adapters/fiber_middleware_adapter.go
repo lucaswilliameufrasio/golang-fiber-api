@@ -21,8 +21,9 @@ func AdaptMiddleware(middleware protocols.Middleware) func(*fiber.Ctx) error {
 			mapResponse, ok := response.Data.(premiddlewares.AuthMiddlewareResult)
 			if !ok {
 				c.Locals("userID", nil)
+			} else {
+				c.Locals("userID", mapResponse.ID)
 			}
-			c.Locals("userID", mapResponse.ID)
 		} else {
 			return c.Status(response.StatusCode).JSON(response.Data)
 		}
