@@ -18,10 +18,9 @@ func AdaptRoute(controller protocols.Controller) func(*fiber.Ctx) error {
 		}
 
 		id, ok := c.Locals("userID").(int)
+		userID = &id
 		if !ok {
 			userID = nil
-		} else {
-			userID = &id
 		}
 
 		var request = protocols.HTTPRequest{
