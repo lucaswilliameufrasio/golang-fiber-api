@@ -7,17 +7,27 @@ import (
 	"github.com/form3tech-oss/jwt-go"
 )
 
-func NewJwtAdapter(secret string) protocols.Encrypter {
-	return JwtAdapter{
+type JwtAdapter interface {
+	protocols.Encrypter
+	protocols.Decrypter
+}
+
+type JwtClaims struct {
+	UserID string `json:"userID"`
+	jwt.StandardClaims
+}
+
+func NewJwtAdapter(secret string) JwtAdapter {
+	return JwtAdapterParams{
 		secret: secret,
 	}
 }
 
-type JwtAdapter struct {
+type JwtAdapterParams struct {
 	secret string
 }
 
-func (jwta JwtAdapter) Encrypt(plaintext string) (string, error) {
+func (jwta JwtAdapterParams) Encrypt(plaintext string) (string, error) {
 
 	token := jwt.New(jwt.SigningMethodHS256)
 
@@ -32,4 +42,23 @@ func (jwta JwtAdapter) Encrypt(plaintext string) (string, error) {
 	}
 
 	return generatedToken, nil
+}
+
+func (jwta JwtAdapterParams) Decrypt(ciphertext string) (string, error) {
+
+	token, err := jwt.ParseWithClaims(ciphertext, &JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwta.secret), nil
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	if token.Valid {
+		if claims, ok := token.Claims.(*JwtClaims); ok {
+			return claims.UserID, nil
+		}
+	}
+
+	return "", err
 }
