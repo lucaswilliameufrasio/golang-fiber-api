@@ -16,6 +16,7 @@ func (fakeLoadUserByIDRepository) LoadByEmail(email string) (*protocols.LoadUser
 	for _, user := range users {
 		if user.Email == email {
 			return &protocols.LoadUserByIDRepositoryResult{
+				ID:       user.ID,
 				Email:    user.Email,
 				Password: user.Password,
 				Role:     user.Role,

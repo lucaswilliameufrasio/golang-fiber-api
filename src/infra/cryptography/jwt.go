@@ -22,7 +22,7 @@ func (jwta JwtAdapter) Encrypt(plaintext string) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
-	claims["role"] = plaintext
+	claims["userID"] = plaintext
 	claims["exp"] = time.Now().Add(time.Hour * 8).Unix()
 
 	generatedToken, err := token.SignedString([]byte(jwta.secret))

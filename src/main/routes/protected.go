@@ -10,5 +10,5 @@ import (
 
 // Protected setup
 func Protected(router fiber.Router) {
-	router.Get("/protected", middlewares.AuthenticationRequired(), middlewares.AuthorizationMiddleware(), adapters.AdaptRoute(fctrls.MakeProtectedControler()))
+	router.Get("/protected", middlewares.AuthenticationMiddleware(), adapters.AdaptRoute(fctrls.MakeProtectedControler()))
 }

@@ -1,6 +1,7 @@
 package aucs
 
 import (
+	"fmt"
 	"lucaswilliameufrasio/golang-fiber-api/src/data/protocols"
 	ucs "lucaswilliameufrasio/golang-fiber-api/src/domain/usecases"
 )
@@ -38,7 +39,8 @@ func (a dbAuthentication) Auth(p ucs.AuthenticationParams) (*ucs.AuthenticationR
 		}
 
 		if iseq == true {
-			generatedToken, err := a.Encrypt(account.Role)
+			userID := fmt.Sprintf("%v", account.ID)
+			generatedToken, err := a.Encrypt(userID)
 
 			if err != nil {
 				return nil, err
