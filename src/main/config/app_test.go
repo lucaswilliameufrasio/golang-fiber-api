@@ -42,14 +42,9 @@ func TestMainRoute(t *testing.T) {
 func TestCorrectEmailAndPassword(t *testing.T) {
 	app := SUT()
 
-	type User struct {
-		ID    int    `json:"id"`
-		Email string `json:"email"`
-	}
-
 	type Response struct {
 		Token string `json:"token"`
-		User  *User  `json:"user"`
+		Email string `json:"email"`
 	}
 
 	// http.Request
@@ -63,33 +58,24 @@ func TestCorrectEmailAndPassword(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	result := &Response{
-		User: &User{},
-	}
+	result := &Response{}
 	err := json.Unmarshal(body, result)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	userID := result.User.ID
-	userEmail := result.User.Email
+	userEmail := result.Email
 
-	assert.Equal(t, 0, userID)
 	assert.Equal(t, "user1@example.com", userEmail)
 }
 
 func TestProtectedRoute(t *testing.T) {
 	app := SUT()
 
-	type User struct {
-		ID    int    `json:"id"`
-		Email string `json:"email"`
-	}
-
 	type Response struct {
 		Token string `json:"token"`
-		User  *User  `json:"user"`
+		Email string `json:"email"`
 	}
 
 	// http.Request
@@ -102,9 +88,7 @@ func TestProtectedRoute(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(respWithToken.Body)
 
-	result := &Response{
-		User: &User{},
-	}
+	result := &Response{}
 	err := json.Unmarshal(body, result)
 
 	if err != nil {
@@ -119,7 +103,7 @@ func TestProtectedRoute(t *testing.T) {
 
 	responseActual, _ := app.Test(mainRequest)
 	responseBody, _ := ioutil.ReadAll(responseActual.Body)
-	expectedResponse := `{"data":"Hello, Dude 👋!"}`
+	expectedResponse := `{"data":"Hello, Dude 👋! Your ID is 1"}`
 
 	assert.Equal(t, expectedResponse, string(responseBody))
 }
