@@ -27,7 +27,7 @@ func (a AuthMiddleware) Handler(request *protocols.HTTPRequest) protocols.HTTPRe
 		return protocols.HTTPResponse{
 			StatusCode: 403,
 			Data: map[string]interface{}{
-				"error": "AccessDeniedError",
+				"error": "Access Denied",
 			},
 		}
 	}
@@ -38,7 +38,7 @@ func (a AuthMiddleware) Handler(request *protocols.HTTPRequest) protocols.HTTPRe
 		return protocols.HTTPResponse{
 			StatusCode: 403,
 			Data: map[string]interface{}{
-				"error": "AccessDeniedError",
+				"error": "Access Denied",
 			},
 		}
 	}
