@@ -70,6 +70,25 @@ func TestCorrectEmailAndPassword(t *testing.T) {
 	assert.Equal(t, "user1@example.com", userEmail)
 }
 
+func TestWrongEmailAndPassword(t *testing.T) {
+	app := SUT()
+
+	// http.Request
+	httpRequest := []byte(`{"email":"userunknown@example.com","password":"pass"}`)
+
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v1/login", bytes.NewBuffer(httpRequest))
+	req.Header.Set("Content-Type", "application/json")
+
+	// http.Response
+	resp, _ := app.Test(req)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	expectedResponse := `{"error":"Bad Credentials"}`
+
+	assert.Equal(t, expectedResponse, string(body))
+}
+
 func TestProtectedRoute(t *testing.T) {
 	app := SUT()
 
@@ -106,4 +125,19 @@ func TestProtectedRoute(t *testing.T) {
 	expectedResponse := `{"data":"Hello, Dude 👋! Your ID is 1"}`
 
 	assert.Equal(t, expectedResponse, string(responseBody))
+}
+
+func TestProtectedRouteError(t *testing.T) {
+	app := SUT()
+
+	req := httptest.NewRequest(http.MethodGet, "http://localhost:7777/api/v1/protected", nil)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, _ := app.Test(req)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	expectedResponse := `{"error":"Access Denied"}`
+
+	assert.Equal(t, expectedResponse, string(body))
 }
