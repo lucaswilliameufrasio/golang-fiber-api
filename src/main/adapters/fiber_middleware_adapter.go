@@ -22,7 +22,8 @@ func AdaptMiddleware(middleware protocols.Middleware) func(*fiber.Ctx) error {
 			if !ok {
 				c.Locals("userID", nil)
 			} else {
-				c.Locals("userID", mapResponse.ID)
+				var id *int = &mapResponse.ID
+				c.Locals("userID", id)
 			}
 		} else {
 			return c.Status(response.StatusCode).JSON(response.Data)
