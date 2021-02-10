@@ -25,7 +25,6 @@ func SetupRoutes(app *fiber.App) fiber.Router {
 // SetupRoutesV1 is a function to export app version 1 routes
 func setupRoutesV1(router fiber.Router) fiber.Router {
 	v1 := router.Group("/v1", middlewares.SimpleMiddleware)
-	v1.Use(middlewares.LimitRequest)
 
 	routes.LoginRoutes(v1)
 	routes.Protected(v1)

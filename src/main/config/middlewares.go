@@ -9,4 +9,5 @@ import (
 // SetupMiddlewares will contain all app middlewares setup
 func SetupMiddlewares(app *fiber.App) {
 	middlewares.Cors(app)
+	middlewares.LimitRequest(app)
 }

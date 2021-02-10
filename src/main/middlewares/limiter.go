@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -8,14 +9,16 @@ import (
 )
 
 // LimitRequest is a middleware to configure a limit to client requests
-func LimitRequest(c *fiber.Ctx) error {
-	limiter.New(limiter.Config{
+func LimitRequest(app *fiber.App) {
+	app.Use(limiter.New(limiter.Config{
 		Next: func(c *fiber.Ctx) bool {
 			return c.IP() == "127.0.0.1"
 		},
 		Max:        20,
 		Expiration: 30 * time.Second,
 		KeyGenerator: func(c *fiber.Ctx) string {
+			fmt.Println(c.IP())
+
 			return c.Get("x-forwarded-for")
 		},
 		LimitReached: func(c *fiber.Ctx) error {
@@ -23,7 +26,5 @@ func LimitRequest(c *fiber.Ctx) error {
 				"error": "Slow down your fingers, mate.",
 			})
 		},
-	})
-
-	return c.Next()
+	}))
 }
