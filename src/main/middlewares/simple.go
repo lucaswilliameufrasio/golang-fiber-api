@@ -8,6 +8,6 @@ import (
 
 // SimpleMiddleware is a middleware only to figure out how that works on fiber
 func SimpleMiddleware(c *fiber.Ctx) error {
-	fmt.Println("May the knowledge be with you")
+	go fmt.Println("May the knowledge be with you")
 	return c.Next()
 }

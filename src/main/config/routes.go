@@ -2,6 +2,7 @@ package config
 
 import (
 	"lucaswilliameufrasio/golang-fiber-api/src/main/events"
+	"lucaswilliameufrasio/golang-fiber-api/src/main/middlewares"
 	"lucaswilliameufrasio/golang-fiber-api/src/main/routes"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,7 +24,7 @@ func SetupRoutes(app *fiber.App) fiber.Router {
 
 // SetupRoutesV1 is a function to export app version 1 routes
 func setupRoutesV1(router fiber.Router) fiber.Router {
-	v1 := router.Group("/v1")
+	v1 := router.Group("/v1", middlewares.SimpleMiddleware)
 
 	routes.LoginRoutes(v1)
 	routes.Protected(v1)
