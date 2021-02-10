@@ -10,7 +10,6 @@ import (
 func main() {
 	server := config.App()
 
-	// app.Use(logger.New())
 	if err := server.Listen(fmt.Sprintf(":%v", environment.Port)); err != nil {
 		log.Panic(err)
 	}
