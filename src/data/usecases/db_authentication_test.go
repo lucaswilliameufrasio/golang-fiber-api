@@ -3,6 +3,7 @@
 package aucs_test
 
 import (
+	"errors"
 	"fmt"
 	mocks "lucaswilliameufrasio/golang-fiber-api/src/data/mocks"
 	"lucaswilliameufrasio/golang-fiber-api/src/data/protocols"
@@ -67,4 +68,26 @@ func TestCallLoadUserByEmailRepositoryCorrectly(t *testing.T) {
 	_, err := sut.Auth(authenticationParams)
 
 	assert.Equal(t, err, nil)
+}
+
+func TestThrowIfLoadUserByEmailRepositoryThrows(t *testing.T) {
+	instances := SUT(t)
+
+	authenticationParams := ucs.AuthenticationParams{
+		Email:    Faker.Internet().Email(),
+		Password: Faker.Internet().Password(),
+	}
+
+	userId := Faker.RandomDigit()
+	userIdAsString := fmt.Sprintf("%v", userId)
+
+	instances.mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).Return(nil, errors.New("Generic"))
+	instances.mockHashComparer.EXPECT().Compare(gomock.Eq(authenticationParams.Password), gomock.Eq("")).Return(true, nil)
+	instances.mockEncrypter.EXPECT().Encrypt(gomock.Eq(userIdAsString)).Return("", nil)
+	sut := instances.sut
+
+	result, err := sut.Auth(authenticationParams)
+
+	assert.Nil(t, result)
+	assert.Equal(t, err, errors.New("Generic"))
 }
