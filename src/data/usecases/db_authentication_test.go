@@ -15,30 +15,54 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	Faker          faker.Faker
+	MockController *gomock.Controller
+)
+
+type SutTypes struct {
+	sut                           ucs.Authentication
+	mockEncrypter                 *mocks.MockEncrypter
+	mockLoadUserByEmailRepository *mocks.MockLoadUserByEmailRepository
+	mockHashComparer              *mocks.MockHashComparer
+}
+
+func SUT(t *testing.T) SutTypes {
+	Faker = faker.New()
+	MockController = gomock.NewController(t)
+	defer MockController.Finish()
+	mockEncrypter := mocks.NewMockEncrypter(MockController)
+	mockLoadUserByEmailRepository := mocks.NewMockLoadUserByEmailRepository(MockController)
+	mockHashComparer := mocks.NewMockHashComparer(MockController)
+
+	sut := aucs.NewDbAuthentication(mockEncrypter, mockLoadUserByEmailRepository, mockHashComparer)
+
+	return SutTypes{
+		sut:                           sut,
+		mockEncrypter:                 mockEncrypter,
+		mockLoadUserByEmailRepository: mockLoadUserByEmailRepository,
+		mockHashComparer:              mockHashComparer,
+	}
+}
+
 func TestCallLoadUserByEmailRepositoryCorrectly(t *testing.T) {
-	faker := faker.New()
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
+	instances := SUT(t)
 
 	authenticationParams := ucs.AuthenticationParams{
-		Email:    faker.Internet().Email(),
-		Password: faker.Internet().Password(),
+		Email:    Faker.Internet().Email(),
+		Password: Faker.Internet().Password(),
 	}
 
-	userId := faker.RandomDigit()
+	userId := Faker.RandomDigit()
 	userIdAsString := fmt.Sprintf("%v", userId)
 
-	mockEncrypter := mocks.NewMockEncrypter(ctrl)
-	mockLoadUserByEmailRepository := mocks.NewMockLoadUserByEmailRepository(ctrl)
-	mockHashComparer := mocks.NewMockHashComparer(ctrl)
-
-	mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).Return(&protocols.LoadUserByIDRepositoryResult{
+	instances.mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).Return(&protocols.LoadUserByIDRepositoryResult{
 		ID:    userId,
 		Email: authenticationParams.Email,
 	}, nil)
-	mockHashComparer.EXPECT().Compare(gomock.Eq(authenticationParams.Password), gomock.Eq("")).Return(true, nil)
-	mockEncrypter.EXPECT().Encrypt(gomock.Eq(userIdAsString)).Return("", nil)
-	sut := aucs.NewDbAuthentication(mockEncrypter, mockLoadUserByEmailRepository, mockHashComparer)
+	instances.mockHashComparer.EXPECT().Compare(gomock.Eq(authenticationParams.Password), gomock.Eq("")).Return(true, nil)
+	instances.mockEncrypter.EXPECT().Encrypt(gomock.Eq(userIdAsString)).Return("", nil)
+	sut := instances.sut
 
 	_, err := sut.Auth(authenticationParams)
 
