@@ -4,9 +4,7 @@ package aucs_test
 
 import (
 	"errors"
-	"fmt"
 	mocks "lucaswilliameufrasio/golang-fiber-api/src/data/mocks"
-	"lucaswilliameufrasio/golang-fiber-api/src/data/protocols"
 	aucs "lucaswilliameufrasio/golang-fiber-api/src/data/usecases"
 	ucs "lucaswilliameufrasio/golang-fiber-api/src/domain/usecases"
 	"testing"
@@ -36,6 +34,10 @@ func SUT(t *testing.T) SutTypes {
 	mockLoadUserByEmailRepository := mocks.NewMockLoadUserByEmailRepository(MockController)
 	mockHashComparer := mocks.NewMockHashComparer(MockController)
 
+	mockHashComparer.EXPECT().Compare(gomock.Any().String(), gomock.Any().String()).AnyTimes()
+	mockEncrypter.EXPECT().Encrypt(gomock.Any().String()).AnyTimes()
+	mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Any().String()).AnyTimes()
+
 	sut := aucs.NewDbAuthentication(mockEncrypter, mockLoadUserByEmailRepository, mockHashComparer)
 
 	return SutTypes{
@@ -54,15 +56,8 @@ func TestCallLoadUserByEmailRepositoryCorrectly(t *testing.T) {
 		Password: Faker.Internet().Password(),
 	}
 
-	userId := Faker.RandomDigit()
-	userIdAsString := fmt.Sprintf("%v", userId)
+	instances.mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).AnyTimes()
 
-	instances.mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).Return(&protocols.LoadUserByIDRepositoryResult{
-		ID:    userId,
-		Email: authenticationParams.Email,
-	}, nil)
-	instances.mockHashComparer.EXPECT().Compare(gomock.Eq(authenticationParams.Password), gomock.Eq("")).Return(true, nil)
-	instances.mockEncrypter.EXPECT().Encrypt(gomock.Eq(userIdAsString)).Return("", nil)
 	sut := instances.sut
 
 	_, err := sut.Auth(authenticationParams)
@@ -78,12 +73,8 @@ func TestThrowIfLoadUserByEmailRepositoryThrows(t *testing.T) {
 		Password: Faker.Internet().Password(),
 	}
 
-	userId := Faker.RandomDigit()
-	userIdAsString := fmt.Sprintf("%v", userId)
-
 	instances.mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).Return(nil, errors.New("Generic"))
-	instances.mockHashComparer.EXPECT().Compare(gomock.Eq(authenticationParams.Password), gomock.Eq("")).Return(true, nil)
-	instances.mockEncrypter.EXPECT().Encrypt(gomock.Eq(userIdAsString)).Return("", nil)
+
 	sut := instances.sut
 
 	result, err := sut.Auth(authenticationParams)
