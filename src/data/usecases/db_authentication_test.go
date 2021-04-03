@@ -58,9 +58,7 @@ func TestCallLoadUserByEmailRepositoryCorrectly(t *testing.T) {
 
 	instances.mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).AnyTimes()
 
-	sut := instances.sut
-
-	_, err := sut.Auth(authenticationParams)
+	_, err := instances.sut.Auth(authenticationParams)
 
 	assert.Equal(t, err, nil)
 }
@@ -75,10 +73,8 @@ func TestThrowIfLoadUserByEmailRepositoryThrows(t *testing.T) {
 
 	instances.mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).Return(nil, errors.New("Generic"))
 
-	sut := instances.sut
-
-	result, err := sut.Auth(authenticationParams)
+	result, err := instances.sut.Auth(authenticationParams)
 
 	assert.Nil(t, result)
-	assert.Equal(t, err, errors.New("Generic"))
+	assert.Error(t, err)
 }
