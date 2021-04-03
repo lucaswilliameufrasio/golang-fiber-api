@@ -8,10 +8,12 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	server := config.App()
+	server := config.App(fiber.Config{DisableStartupMessage: false})
 
 	go func() {
 		if err := server.Listen(fmt.Sprintf(":%v", environment.Port)); err != nil {

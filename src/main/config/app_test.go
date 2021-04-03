@@ -16,7 +16,9 @@ import (
 )
 
 func SUT() *fiber.App {
-	return App()
+	return App(fiber.Config{
+		DisableStartupMessage: true,
+	})
 }
 
 func TestWebsocket(t *testing.T) {

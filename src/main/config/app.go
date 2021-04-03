@@ -5,8 +5,8 @@ import (
 )
 
 // App is a function to start the HTTP Server
-func App() *fiber.App {
-	app := fiber.New()
+func App(config fiber.Config) *fiber.App {
+	app := fiber.New(config)
 
 	SetupStaticFiles(app)
 	SetupMiddlewares(app)
