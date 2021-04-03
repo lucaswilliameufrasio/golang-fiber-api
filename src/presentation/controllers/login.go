@@ -26,8 +26,9 @@ type LoginController struct {
 }
 
 func castParams(data interface{}) LoginControllerParams {
-	email := data.(map[string]interface{})["email"].(string)
-	password := data.(map[string]interface{})["password"].(string)
+	convertedData := data.(map[string]interface{})
+	email := convertedData["email"].(string)
+	password := convertedData["password"].(string)
 	params := LoginControllerParams{
 		Email:    email,
 		Password: password,
