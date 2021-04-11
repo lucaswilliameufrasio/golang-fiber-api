@@ -35,7 +35,7 @@ cv-lcov:
 
 ## Generate page to see coverage visually
 test-coverage:
-	$ go test -v -coverpkg=./... -covermode=count -coverprofile=coverage.out ./... -tags=test
+	$ APP_ENV=test go test -coverpkg $(shell go list ./src/... | grep -v data/protocols/protocolsfake | grep -v main | tr '\n' ',') -coverprofile coverage.out ./src/... -tags=test
 .PHONY: test-coverage-page
 
 ## Generate page to see coverage visually
