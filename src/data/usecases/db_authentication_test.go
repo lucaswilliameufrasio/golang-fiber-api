@@ -4,7 +4,7 @@ package aucs_test
 
 import (
 	"errors"
-	mocks "lucaswilliameufrasio/golang-fiber-api/src/data/mocks"
+	fakeproto "lucaswilliameufrasio/golang-fiber-api/src/data/protocols/protocolsfakes"
 	aucs "lucaswilliameufrasio/golang-fiber-api/src/data/usecases"
 	ucs "lucaswilliameufrasio/golang-fiber-api/src/domain/usecases"
 	"testing"
@@ -21,30 +21,26 @@ var (
 
 type SutTypes struct {
 	sut                           ucs.Authentication
-	mockEncrypter                 *mocks.MockEncrypter
-	mockLoadUserByEmailRepository *mocks.MockLoadUserByEmailRepository
-	mockHashComparer              *mocks.MockHashComparer
+	encrypterSpy                  *fakeproto.FakeEncrypter
+	loadUserByEmailRepositoryStub *fakeproto.FakeLoadUserByEmailRepository
+	hashComparer                  *fakeproto.FakeHashComparer
 }
 
 func SUT(t *testing.T) SutTypes {
 	Faker = faker.New()
 	MockController = gomock.NewController(t)
 	defer MockController.Finish()
-	mockEncrypter := mocks.NewMockEncrypter(MockController)
-	mockLoadUserByEmailRepository := mocks.NewMockLoadUserByEmailRepository(MockController)
-	mockHashComparer := mocks.NewMockHashComparer(MockController)
+	fakeEncrypter := &fakeproto.FakeEncrypter{}
+	fakeLoadUserByEmailRepository := &fakeproto.FakeLoadUserByEmailRepository{}
+	fakeHashComparer := &fakeproto.FakeHashComparer{}
 
-	mockHashComparer.EXPECT().Compare(gomock.Any().String(), gomock.Any().String()).AnyTimes()
-	mockEncrypter.EXPECT().Encrypt(gomock.Any().String()).AnyTimes()
-	mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Any().String()).AnyTimes()
-
-	sut := aucs.NewDbAuthentication(mockEncrypter, mockLoadUserByEmailRepository, mockHashComparer)
+	sut := aucs.NewDbAuthentication(fakeEncrypter, fakeLoadUserByEmailRepository, fakeHashComparer)
 
 	return SutTypes{
 		sut:                           sut,
-		mockEncrypter:                 mockEncrypter,
-		mockLoadUserByEmailRepository: mockLoadUserByEmailRepository,
-		mockHashComparer:              mockHashComparer,
+		encrypterSpy:                  fakeEncrypter,
+		loadUserByEmailRepositoryStub: fakeLoadUserByEmailRepository,
+		hashComparer:                  fakeHashComparer,
 	}
 }
 
@@ -56,7 +52,7 @@ func TestCallLoadUserByEmailRepositoryCorrectly(t *testing.T) {
 		Password: Faker.Internet().Password(),
 	}
 
-	instances.mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).AnyTimes()
+	instances.loadUserByEmailRepositoryStub.LoadByEmail(authenticationParams.Email)
 
 	_, err := instances.sut.Auth(authenticationParams)
 
@@ -71,7 +67,7 @@ func TestThrowIfLoadUserByEmailRepositoryThrows(t *testing.T) {
 		Password: Faker.Internet().Password(),
 	}
 
-	instances.mockLoadUserByEmailRepository.EXPECT().LoadByEmail(gomock.Eq(authenticationParams.Email)).Return(nil, errors.New("Generic"))
+	instances.loadUserByEmailRepositoryStub.LoadByEmailReturns(nil, errors.New("Generic"))
 
 	result, err := instances.sut.Auth(authenticationParams)
 
