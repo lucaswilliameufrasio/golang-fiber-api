@@ -19,3 +19,16 @@ make dev
 ``` bash
 npx wscat -c localhost:7979/api/ws
 ```
+
+## To install counterfeiter
+
+```bash
+GO111MODULE=off go get -u github.com/maxbrunsfeld/counterfeiter
+```
+
+## To generate Test Double. example:
+
+```bash
+cd src/data/protocols
+counterfeiter ./encrypter.go Encrypter
+```
