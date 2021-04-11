@@ -9,14 +9,12 @@ import (
 	ucs "lucaswilliameufrasio/golang-fiber-api/src/domain/usecases"
 	"testing"
 
-	"github.com/golang/mock/gomock"
 	"github.com/jaswdr/faker"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	Faker          faker.Faker
-	MockController *gomock.Controller
+	Faker faker.Faker
 )
 
 type SutTypes struct {
@@ -28,8 +26,6 @@ type SutTypes struct {
 
 func SUT(t *testing.T) SutTypes {
 	Faker = faker.New()
-	MockController = gomock.NewController(t)
-	defer MockController.Finish()
 	fakeEncrypter := &fakeproto.FakeEncrypter{}
 	fakeLoadUserByEmailRepository := &fakeproto.FakeLoadUserByEmailRepository{}
 	fakeHashComparer := &fakeproto.FakeHashComparer{}
