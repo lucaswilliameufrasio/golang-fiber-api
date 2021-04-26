@@ -67,11 +67,8 @@ func (sts LoginController) Handler(request *protocols.HTTPRequest) protocols.HTT
 		return presenthelpers.Unauthorized()
 	}
 
-	return protocols.HTTPResponse{
-		StatusCode: 200,
-		Data: LoginControllerResult{
-			Token: result.Token,
-			Email: result.User.Email,
-		},
-	}
+	return presenthelpers.OK(LoginControllerResult{
+		Token: result.Token,
+		Email: result.User.Email,
+	})
 }

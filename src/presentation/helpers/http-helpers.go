@@ -26,3 +26,10 @@ func Unauthorized() protocols.HTTPResponse {
 		},
 	}
 }
+
+func OK(data interface{}) protocols.HTTPResponse {
+	return protocols.HTTPResponse{
+		StatusCode: 200,
+		Data:       data,
+	}
+}
