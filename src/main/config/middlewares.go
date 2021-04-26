@@ -10,4 +10,5 @@ import (
 func SetupMiddlewares(app *fiber.App) {
 	middlewares.Cors(app)
 	middlewares.LimitRequest(app)
+	middlewares.Recover(app)
 }
