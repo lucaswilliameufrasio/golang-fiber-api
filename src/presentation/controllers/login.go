@@ -2,6 +2,8 @@ package controllers
 
 import (
 	ucs "lucaswilliameufrasio/golang-fiber-api/src/domain/usecases"
+	presenterrors "lucaswilliameufrasio/golang-fiber-api/src/presentation/errors"
+	presenthelpers "lucaswilliameufrasio/golang-fiber-api/src/presentation/helpers"
 	protocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
 )
 
@@ -47,33 +49,22 @@ func castParams(data interface{}) LoginControllerParams {
 // Handler is a controller to execute login process
 func (sts LoginController) Handler(request *protocols.HTTPRequest) protocols.HTTPResponse {
 	if request.Body == nil {
-		return protocols.HTTPResponse{
-			StatusCode: 401,
-			Data: map[string]interface{}{
-				"error": "Bad Credentials",
-			},
-		}
+		return presenthelpers.BadRequest(presenterrors.MissingParamError("email"))
 	}
 	params := castParams(request.Body)
 
-	if params.Email == "" || params.Password == "" {
-		return protocols.HTTPResponse{
-			StatusCode: 401,
-			Data: map[string]interface{}{
-				"error": "Bad Credentials",
-			},
-		}
+	if params.Email == "" {
+		return presenthelpers.BadRequest(presenterrors.MissingParamError("email"))
+	}
+
+	if params.Password == "" {
+		return presenthelpers.BadRequest(presenterrors.MissingParamError("password"))
 	}
 
 	result, err := sts.Authentication.Auth(ucs.AuthenticationParams(params))
 
 	if err != nil || result == nil {
-		return protocols.HTTPResponse{
-			StatusCode: 401,
-			Data: map[string]interface{}{
-				"error": "Bad Credentials",
-			},
-		}
+		return presenthelpers.Unauthorized()
 	}
 
 	return protocols.HTTPResponse{
