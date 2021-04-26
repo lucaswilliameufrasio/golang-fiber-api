@@ -26,9 +26,17 @@ type LoginController struct {
 }
 
 func castParams(data interface{}) LoginControllerParams {
-	convertedData := data.(map[string]interface{})
-	email := convertedData["email"].(string)
-	password := convertedData["password"].(string)
+	dataToMap := data.(map[string]interface{})
+
+	if dataToMap["email"] == nil || dataToMap["password"] == nil {
+		return LoginControllerParams{
+			Email:    "",
+			Password: "",
+		}
+	}
+
+	email := dataToMap["email"].(string)
+	password := dataToMap["password"].(string)
 	params := LoginControllerParams{
 		Email:    email,
 		Password: password,
@@ -38,7 +46,24 @@ func castParams(data interface{}) LoginControllerParams {
 
 // Handler is a controller to execute login process
 func (sts LoginController) Handler(request *protocols.HTTPRequest) protocols.HTTPResponse {
+	if request.Body == nil {
+		return protocols.HTTPResponse{
+			StatusCode: 401,
+			Data: map[string]interface{}{
+				"error": "Bad Credentials",
+			},
+		}
+	}
 	params := castParams(request.Body)
+
+	if params.Email == "" || params.Password == "" {
+		return protocols.HTTPResponse{
+			StatusCode: 401,
+			Data: map[string]interface{}{
+				"error": "Bad Credentials",
+			},
+		}
+	}
 
 	result, err := sts.Authentication.Auth(ucs.AuthenticationParams(params))
 
