@@ -112,7 +112,7 @@ func TestWrongEmail(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	expectedResponse := `{"error":"Bad Credentials"}`
+	expectedResponse := `{"error":"Unauthorized"}`
 
 	assert.Equal(t, expectedResponse, string(body))
 }
@@ -131,7 +131,7 @@ func TestWrongPassword(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	expectedResponse := `{"error":"Bad Credentials"}`
+	expectedResponse := `{"error":"Unauthorized"}`
 
 	assert.Equal(t, expectedResponse, string(body))
 }
