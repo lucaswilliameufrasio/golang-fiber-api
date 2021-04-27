@@ -68,7 +68,7 @@ func TestProtectedRouteError(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	expectedResponse := `{"error":"Access Denied"}`
+	expectedResponse := `{"error":"Unauthorized"}`
 
 	assert.Equal(t, expectedResponse, string(body))
 }
