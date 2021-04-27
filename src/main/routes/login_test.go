@@ -126,3 +126,18 @@ func TestMissingPassword(t *testing.T) {
 
 	assert.Equal(t, expectedResponse, string(body))
 }
+
+func TestNilBody(t *testing.T) {
+	app := SUTLogin()
+
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v1/login", nil)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, _ := app.Test(req)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	expectedResponse := `{"error":"Missing param: email"}`
+
+	assert.Equal(t, expectedResponse, string(body))
+}
