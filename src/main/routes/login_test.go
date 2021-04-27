@@ -141,3 +141,20 @@ func TestNilBody(t *testing.T) {
 
 	assert.Equal(t, expectedResponse, string(body))
 }
+
+func TestNilParameters(t *testing.T) {
+	app := SUTLogin()
+
+	httpRequest := []byte(`{}`)
+
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v1/login", bytes.NewBuffer(httpRequest))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, _ := app.Test(req)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	expectedResponse := `{"error":"Missing param: email"}`
+
+	assert.Equal(t, expectedResponse, string(body))
+}
