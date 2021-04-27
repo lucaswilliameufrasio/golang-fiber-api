@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	presentationhelpers "lucaswilliameufrasio/golang-fiber-api/src/presentation/helpers"
 	protocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
 	valiprotocols "lucaswilliameufrasio/golang-fiber-api/src/validation/protocols"
 	"strconv"
@@ -24,29 +25,16 @@ func (a AuthMiddleware) Handler(request *protocols.HTTPRequest) protocols.HTTPRe
 	id, err := a.Validate(request.Token)
 
 	if err != nil {
-		return protocols.HTTPResponse{
-			StatusCode: 403,
-			Data: map[string]interface{}{
-				"error": "Access Denied",
-			},
-		}
+		return presentationhelpers.Unauthorized()
 	}
 
 	userID, err := strconv.Atoi(*id)
 
 	if err != nil {
-		return protocols.HTTPResponse{
-			StatusCode: 403,
-			Data: map[string]interface{}{
-				"error": "Access Denied",
-			},
-		}
+		return presentationhelpers.Unauthorized()
 	}
 
-	return protocols.HTTPResponse{
-		StatusCode: 200,
-		Data: AuthMiddlewareResult{
-			ID: userID,
-		},
-	}
+	return presentationhelpers.OK(AuthMiddlewareResult{
+		ID: userID,
+	})
 }
