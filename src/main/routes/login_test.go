@@ -88,3 +88,41 @@ func TestWrongPassword(t *testing.T) {
 
 	assert.Equal(t, expectedResponse, string(body))
 }
+
+func TestMissingEmail(t *testing.T) {
+	app := SUTLogin()
+
+	// http.Request
+	httpRequest := []byte(`{"email":"","password":"pass"}`)
+
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v1/login", bytes.NewBuffer(httpRequest))
+	req.Header.Set("Content-Type", "application/json")
+
+	// http.Response
+	resp, _ := app.Test(req)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	expectedResponse := `{"error":"Missing param: email"}`
+
+	assert.Equal(t, expectedResponse, string(body))
+}
+
+func TestMissingPassword(t *testing.T) {
+	app := SUTLogin()
+
+	// http.Request
+	httpRequest := []byte(`{"email":"user1@example.com","password":""}`)
+
+	req := httptest.NewRequest(http.MethodPost, "http://localhost:7777/api/v1/login", bytes.NewBuffer(httpRequest))
+	req.Header.Set("Content-Type", "application/json")
+
+	// http.Response
+	resp, _ := app.Test(req)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	expectedResponse := `{"error":"Missing param: password"}`
+
+	assert.Equal(t, expectedResponse, string(body))
+}
