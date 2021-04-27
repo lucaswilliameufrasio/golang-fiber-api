@@ -18,15 +18,6 @@ func BadRequest(errorParam error) protocols.HTTPResponse {
 	}
 }
 
-func Forbidden(errorParam error) protocols.HTTPResponse {
-	return protocols.HTTPResponse{
-		StatusCode: 403,
-		Data: ErrorResponse{
-			Error: errorParam.Error(),
-		},
-	}
-}
-
 func Unauthorized() protocols.HTTPResponse {
 	return protocols.HTTPResponse{
 		StatusCode: 401,
