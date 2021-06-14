@@ -65,12 +65,20 @@ clean-mod:
 
 ## Build image using root permission
 docker-build-sudo:
-	$ sudo docker build -t lucaswilliam/go-fiber-api .
-.PHONY: docker-build-sudo
+	$ sudo docker build -t lucaswilliameufrasio/go-fiber-api .
+.PHONY: docker-build-sudo"
 
 ## Run image using root permissions
 docker-run-sudo:
-	$ sudo docker run -d -p 7979:8888 -e PORT=8888 lucaswilliam/go-fiber-api
+	$ sudo docker run -d -p 7979:8888 -e PORT=8888 lucaswilliameufrasio/go-fiber-api
 .PHONY: docker-run-sudo
 
+## Build image
+docker-build:
+	$ docker build -t lucaswilliameufrasio/go-fiber-api .
+.PHONY: docker-build-sudo"
 
+## Run image
+docker-run:
+	$ docker run -d -p 7979:8888 -e PORT=8888 lucaswilliameufrasio/go-fiber-api
+.PHONY: docker-run-sudo
