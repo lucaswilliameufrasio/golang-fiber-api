@@ -2,7 +2,6 @@ package validators
 
 import (
 	"errors"
-	"fmt"
 
 	presenterrors "lucaswilliameufrasio/golang-fiber-api/src/presentation/errors"
 
@@ -33,7 +32,6 @@ func LoginValidation(c *fiber.Ctx) error {
 	err := validate.Struct(params)
 
 	if err != nil {
-		fmt.Println(err)
 		for _, errorValue := range err.(validator.ValidationErrors) {
 			paramKey := errors.New(errorValue.Field())
 			return c.Status(400).JSON(fiber.Map{
