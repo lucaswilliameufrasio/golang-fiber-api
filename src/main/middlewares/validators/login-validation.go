@@ -24,10 +24,7 @@ func LoginValidation(c *fiber.Ctx) error {
 
 	validate := validator.New()
 
-	params := &LoginParams{
-		Email:    body.Email,
-		Password: body.Password,
-	}
+	params := LoginParams(*body)
 
 	err := validate.Struct(params)
 
