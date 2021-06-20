@@ -9,6 +9,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fasthttp/websocket v1.4.3 // indirect
 	github.com/form3tech-oss/jwt-go v3.2.3+incompatible
+	github.com/go-playground/validator/v10 v10.6.1
 	github.com/gofiber/fiber/v2 v2.13.0
 	github.com/gofiber/jwt/v2 v2.1.0
 	github.com/gofiber/websocket/v2 v2.0.6
