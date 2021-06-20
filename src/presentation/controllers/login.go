@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	ucs "lucaswilliameufrasio/golang-fiber-api/src/domain/usecases"
-	presenterrors "lucaswilliameufrasio/golang-fiber-api/src/presentation/errors"
 	presenthelpers "lucaswilliameufrasio/golang-fiber-api/src/presentation/helpers"
 	protocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
 )
@@ -28,28 +27,21 @@ type LoginController struct {
 	ucs.Authentication
 }
 
-func castParams(data interface{}) (*LoginControllerParams, error) {
+func castParams(data interface{}) LoginControllerParams {
 	jsonString, _ := json.Marshal(data)
 
 	params := LoginControllerParams{}
 
 	json.Unmarshal(jsonString, &params)
 
-	return &params, nil
+	return params
 }
 
 // Handler is a controller to execute login process
 func (sts LoginController) Handler(request *protocols.HTTPRequest) protocols.HTTPResponse {
-	if request.Body == nil {
-		return presenthelpers.BadRequest(presenterrors.MissingParamError("email"))
-	}
-	params, err := castParams(request.Body)
+	params := castParams(request.Body)
 
-	if err != nil {
-		return presenthelpers.BadRequest(presenterrors.MissingParamError(err.Error()))
-	}
-
-	result, err := sts.Authentication.Auth(ucs.AuthenticationParams(*params))
+	result, err := sts.Authentication.Auth(ucs.AuthenticationParams(params))
 
 	if err != nil || result == nil {
 		return presenthelpers.Unauthorized()
