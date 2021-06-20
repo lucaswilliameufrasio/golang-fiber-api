@@ -1,18 +1,16 @@
 package controllers
 
 import (
-	"errors"
+	"encoding/json"
 	ucs "lucaswilliameufrasio/golang-fiber-api/src/domain/usecases"
 	presenterrors "lucaswilliameufrasio/golang-fiber-api/src/presentation/errors"
 	presenthelpers "lucaswilliameufrasio/golang-fiber-api/src/presentation/helpers"
 	protocols "lucaswilliameufrasio/golang-fiber-api/src/presentation/protocols"
-
-	"github.com/go-playground/validator/v10"
 )
 
 type LoginControllerParams struct {
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type LoginControllerResult struct {
@@ -30,31 +28,14 @@ type LoginController struct {
 	ucs.Authentication
 }
 
-func castAndValidateParams(data interface{}) (*LoginControllerParams, error) {
-	dataToMap := data.(map[string]interface{})
+func castParams(data interface{}) (*LoginControllerParams, error) {
+	jsonString, _ := json.Marshal(data)
 
-	validate := validator.New()
+	params := LoginControllerParams{}
 
-	email := dataToMap["email"].(string)
-	password := dataToMap["password"].(string)
+	json.Unmarshal(jsonString, &params)
 
-	params := &LoginControllerParams{
-		Email:    string(email),
-		Password: password,
-	}
-
-	err := validate.Struct(params)
-
-	if err != nil {
-		var paramKey error
-		for _, errorValue := range err.(validator.ValidationErrors) {
-			paramKey = errors.New(errorValue.Tag())
-			return nil, paramKey
-		}
-
-	}
-
-	return params, nil
+	return &params, nil
 }
 
 // Handler is a controller to execute login process
@@ -62,7 +43,7 @@ func (sts LoginController) Handler(request *protocols.HTTPRequest) protocols.HTT
 	if request.Body == nil {
 		return presenthelpers.BadRequest(presenterrors.MissingParamError("email"))
 	}
-	params, err := castAndValidateParams(request.Body)
+	params, err := castParams(request.Body)
 
 	if err != nil {
 		return presenthelpers.BadRequest(presenterrors.MissingParamError(err.Error()))

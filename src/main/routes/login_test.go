@@ -103,7 +103,7 @@ func TestMissingEmail(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	expectedResponse := `{"error":"Missing param: email"}`
+	expectedResponse := `{"error":"Missing param: Email"}`
 
 	assert.Equal(t, expectedResponse, string(body))
 }
@@ -122,7 +122,7 @@ func TestMissingPassword(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	expectedResponse := `{"error":"Missing param: password"}`
+	expectedResponse := `{"error":"Missing param: Password"}`
 
 	assert.Equal(t, expectedResponse, string(body))
 }
@@ -137,7 +137,7 @@ func TestNilBody(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	expectedResponse := `{"error":"Missing param: email"}`
+	expectedResponse := `{"error":"Missing param: Email"}`
 
 	assert.Equal(t, expectedResponse, string(body))
 }
@@ -154,7 +154,7 @@ func TestNilParameters(t *testing.T) {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	expectedResponse := `{"error":"Missing param: email"}`
+	expectedResponse := `{"error":"Missing param: Email"}`
 
 	assert.Equal(t, expectedResponse, string(body))
 }

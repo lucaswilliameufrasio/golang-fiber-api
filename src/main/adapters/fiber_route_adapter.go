@@ -9,7 +9,7 @@ import (
 // AdaptRoute adapt fiber interface to any controller
 func AdaptRoute(controller protocols.Controller) func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		var body map[string]interface{}
+		var body interface{}
 		var userID *int
 		if err := c.BodyParser(&body); err != nil {
 			c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
