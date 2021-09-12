@@ -4,9 +4,9 @@ package aucs_test
 
 import (
 	"errors"
-	fakeproto "lucaswilliameufrasio/golang-fiber-api/src/data/protocols/protocolsfakes"
 	aucs "lucaswilliameufrasio/golang-fiber-api/src/data/usecases"
 	ucs "lucaswilliameufrasio/golang-fiber-api/src/domain/usecases"
+	fakeproto "lucaswilliameufrasio/golang-fiber-api/test/data/mocks"
 	"testing"
 
 	"github.com/jaswdr/faker"
