@@ -4,6 +4,58 @@
 
 # Golang Fiber API
 
+
+## Performance tests results:
+
+
+Command used:
+
+```
+oha -n 1000 http://localhost:7979/api/ && reset && oha -n 1000000 -c 1000 http://localhost:7979/api/
+```
+
+
+Summary:
+  Success rate:	1.0000
+  Total:	7.5241 secs
+  Slowest:	0.1579 secs
+  Fastest:	0.0001 secs
+  Average:	0.0074 secs
+  Requests/sec:	132905.9865
+
+  Total data:	27.66 MiB
+  Size/request:	29 B
+  Size/sec:	3.68 MiB
+
+Response time histogram:
+  0.002 [138451] |■■■■■■■■■■■■■■■■■■■■
+  0.004 [215759] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.006 [185169] |■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.008 [136249] |■■■■■■■■■■■■■■■■■■■■
+  0.010 [94194]  |■■■■■■■■■■■■■
+  0.012 [65899]  |■■■■■■■■■
+  0.014 [48384]  |■■■■■■■
+  0.016 [33828]  |■■■■■
+  0.018 [23192]  |■■■
+  0.020 [16315]  |■■
+  0.022 [42560]  |■■■■■■
+
+Latency distribution:
+  10% in 0.0017 secs
+  25% in 0.0032 secs
+  50% in 0.0056 secs
+  75% in 0.0097 secs
+  90% in 0.0150 secs
+  95% in 0.0192 secs
+  99% in 0.0298 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0429 secs, 0.0002 secs, 0.1459 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0002 secs
+
+Status code distribution:
+  [200] 1000000 responses
+
 ## To run in production mode:
 
 ``` bash
