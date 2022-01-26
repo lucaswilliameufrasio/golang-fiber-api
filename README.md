@@ -5,7 +5,7 @@
 # Golang Fiber API
 
 
-## Performance tests results:
+## Performance tests results (not a real world performance test, just an example):
 
 Command used to start the app:
 
@@ -24,6 +24,14 @@ oha -n 1000 http://localhost:7979/api/ && reset && oha -n 1000000 -c 1000 http:/
 
 ![Performance results with oha](https://user-images.githubusercontent.com/34021576/151087913-a414fe49-e7fa-43b0-ad4b-ac213423d551.png)
 
+
+Same test on AWS EKS with two replicas:
+
+![Screenshot_20210611_215838](https://user-images.githubusercontent.com/34021576/151088308-1939b2c2-a3eb-44c0-9525-939874c0604e.png)
+
+At login route:
+
+![Screenshot_20210611_220802](https://user-images.githubusercontent.com/34021576/151088457-40ed7eeb-9c37-42ac-81d2-dc5c9a35ee0b.png)
 
 ## To run in production mode:
 
